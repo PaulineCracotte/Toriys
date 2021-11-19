@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import {Bodies, Clothings, Feature, Hairs, LeftEyes, Mouths, Noses, RightEyes} from '@/assets/picrew/features';
+import {Bodies, Clothings, Feature, Hairs, LeftEyes, Mouths, Noses, RightEyes} from '@/assets/features';
 import buttonnotpressed from '@/assets/button-notpressed.png';
 import buttonpressed from '@/assets/button-pressed.png';
 
