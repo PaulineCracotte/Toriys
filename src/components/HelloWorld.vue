@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+
     <div class="mix">
       <img class="layer l-1" :src="body.data" />
       <img class="layer l-2" :src="clothing.data" />
@@ -10,7 +11,14 @@
       <img class="layer l-7" :src="hair.data" />
     </div>
     <div>
-      <button @click="randomize">Randomize</button>
+      <div class="button-randomize">
+        <img
+            @click="randomize"
+            @mousedown="onMouseDown"
+            @mouseup="onMouseUp"
+             :src="buttonImage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -18,6 +26,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import {Bodies, Clothings, Feature, Hairs, LeftEyes, Mouths, Noses, RightEyes} from '@/assets/picrew/features';
+import buttonnotpressed from '@/assets/button-notpressed.png';
+import buttonpressed from '@/assets/button-pressed.png';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -28,11 +38,20 @@ export default class HelloWorld extends Vue {
   private hair: Feature = Hairs[0];
   private body: Feature = Bodies[0];
   private clothing: Feature = Clothings[0];
+  private buttonImage = '';
 
   mounted(): void {
+    this.buttonImage = buttonnotpressed;
     this.randomize();
   }
 
+  onMouseUp(): void {
+    this.buttonImage = buttonnotpressed;
+  }
+
+  onMouseDown(): void {
+    this.buttonImage = buttonpressed;
+  }
   randomize(): void {
     this.leftEye = LeftEyes[Math.floor(Math.random() * 4)];
     this.rightEye = RightEyes[Math.floor(Math.random() * 4)];
@@ -101,5 +120,15 @@ li {
 }
 a {
   color: #42b983;
+}
+.page {
+  height: 100vh;
+  width: 100%;
+  background: url("~@/assets/bg-repeat.png") repeat-x;
+  background-size: 16px 900px;
+}
+.button-randomize img {
+  width: 300px;
+  image-rendering: pixelated;
 }
 </style>
