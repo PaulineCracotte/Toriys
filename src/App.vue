@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <HelloWorld :configs="configs" />
   </div>
 </template>
 
@@ -13,15 +13,27 @@ import HelloWorld from './components/HelloWorld.vue';
     HelloWorld,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  private configs: Array<string> = [
+    'Khizo',
+    'Fala',
+    'Denjil',
+    'Kana'
+  ];
+}
 </script>
 
 <style>
+@font-face {
+  font-family: SuperLegendBoy;
+  src: local("SuperLegendBoy"),
+  url("../src/fonts/SuperLegendBoy-4w8Y.ttf") format('truetype');
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: SuperLegendBoy, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #472d3c;
 }
 </style>
