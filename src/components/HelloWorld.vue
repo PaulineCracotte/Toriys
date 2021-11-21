@@ -6,7 +6,7 @@
     <div class="frame">
       <div class="top">
         <div class="mix">
-          <canvas ref="canvas" width="100" height="100"></canvas>
+          <canvas ref="canvas" width="600" height="600"></canvas>
         </div>
         <div class="right">
           <div class="metadata">
@@ -22,9 +22,12 @@
             </ul>
           </div>
           <div class="actions">
+              <a :href="downloadLink" class="clickable save" :download="`toriy_${tokenId}`">
+                <img src="@/assets/ui/floppy.png" /> Download
+              </a>
             <div v-if="!checked">
               <div class="clickable" v-if="!checked" @click="check">
-                <img src="@/assets/ui/eye.png" > Check availability
+                <img src="@/assets/ui/eye.png" /> Check availability
               </div>
             </div>
             <div v-else-if="available">
@@ -86,14 +89,19 @@ export default class HelloWorld extends Web3Component {
   private loading = false;
   private errorMessage = '';
   private tx = '';
+  private downloadLink = '';
 
   mounted(): void {
     const canvas = this.$refs['canvas'] as HTMLCanvasElement;
-    this.canvas = canvas.getContext('2d');
+    this.canvas = canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.canvas.imageSmoothingEnabled = false;
     this.buttonImage = buttonnotpressed;
     this.randomize();
   }
 
+  save(e: MouseEvent) {
+    e.preventDefault();
+  }
   private loadImage(src: string): any{
     return new Promise<any>((resolve, reject) => {
       const image = new Image();
@@ -102,7 +110,6 @@ export default class HelloWorld extends Web3Component {
       image.src = src;
     });
   }
-
 
   async draw(): Promise<void> {
     if (this.canvas === null) {
@@ -115,14 +122,19 @@ export default class HelloWorld extends Web3Component {
     const nose = await this.loadImage(Noses[this.nose].data);
     const mouth = await this.loadImage(Mouths[this.mouth].data);
     const hair = await this.loadImage(Hairs[this.hair].data);
-    this.canvas.clearRect(0, 0, 100, 100);
-    this.canvas.drawImage(body, 0, 0);
-    this.canvas.drawImage(clothing, 0, 0);
-    this.canvas.drawImage(leftEye, 0, 0);
-    this.canvas.drawImage(rightEye, 0, 0);
-    this.canvas.drawImage(nose, 0, 0);
-    this.canvas.drawImage(mouth, 0, 0);
-    this.canvas.drawImage(hair, 0, 0);
+    this.canvas.clearRect(0, 0, 600, 600);
+    this.canvas.drawImage(body, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(clothing, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(leftEye, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(rightEye, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(nose, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(mouth, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(hair, 0, 0, 100, 100, 0, 0, 600, 600);
+    const canvas = this.$refs['canvas'] as HTMLCanvasElement;
+    canvas.toBlob((blob) => {
+      this.downloadLink = URL.createObjectURL(blob);
+      console.log(this.downloadLink);
+    },'image/png');
   }
 
   get tokenId(): number {
@@ -276,6 +288,7 @@ img {
   width: 100%;
 }
 .clickable {
+  /*display: block;*/
   cursor: pointer;
   user-select: none;
 }
@@ -294,6 +307,21 @@ img {
 }
 .actions .clickable:hover {
   color: #a05b53;
+}
+.clickable.save {
+  display: block;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  text-align: left;
+}
+.clickable.save img {
+  height: 60px;
+  margin-left: 20px;
+  margin-right: 45px;
+}
+a.clickable.save {
+  color: #472d3c;
 }
 .mix {
   position: relative;
@@ -323,6 +351,7 @@ li {
 }
 a {
   color: #42b983;
+  text-decoration: none;
 }
 .page {
   height: 100vh;
