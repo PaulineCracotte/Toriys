@@ -42,7 +42,7 @@
       </div>
       <div class="bottom">
         <div v-if="errorMessage !== ''">{{errorMessage}}</div>
-        <div v-if="tx">Transaction Hash: <a :href="`https://rinkeby.etherscan.io/tx/${tx}`">{{ tx }}</a></div>
+        <div v-if="tx">Transaction Hash: <a target="_blank" :href="`https://polygonscan.com/tx/${tx}`">{{ tx }}</a></div>
       </div>
     </div>
     <div class="button-randomize">
@@ -65,6 +65,7 @@ import {Bodies, Clothings, Hairs, LeftEyes, Mouths, Noses, RightEyes} from '@/as
 import buttonnotpressed from '@/assets/ui/button-notpressed.png';
 import buttonpressed from '@/assets/ui/button-pressed.png';
 import Loading from '@/components/Loading.vue';
+
 @Component({
   components: {Loading}
 })
@@ -156,7 +157,12 @@ export default class HelloWorld extends Web3Component {
       this.errorMessage = 'Login with metamask first and make sure you have your address connected';
     }
     const canvas = this.$refs['canvas'] as HTMLCanvasElement;
-    const blob = await new Promise(resolve => canvas.toBlob(resolve));
+    const blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (blob === null) return reject();
+        resolve(blob);
+      });
+    });
     const imageCid = await NFTPortClient.uploadFile(blob);
     const metadata = {
       name: "Random Toriys",
