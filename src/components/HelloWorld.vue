@@ -284,11 +284,11 @@ img {
   text-align: left;
 }
 .actions .clickable {
-  height: 50px;
-  line-height: 50px;
+  height: 100px;
+  line-height: 100px;
 }
 .actions .clickable img {
-  height: 50px;
+  height: 100px;
   float: left;
   margin-right: 25px;
 }
@@ -336,7 +336,7 @@ a {
   visibility: hidden;
 }
 @media (max-width: 800px) {
-  .frame {
+  .top {
     flex-direction: column;
   }
 }
