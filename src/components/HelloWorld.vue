@@ -6,7 +6,7 @@
     <div class="frame">
       <div class="top">
         <div class="mix">
-          <canvas ref="canvas" width="100" height="100"></canvas>
+          <canvas ref="canvas" width="600" height="600"></canvas>
         </div>
         <div class="right">
           <div class="metadata">
@@ -89,7 +89,8 @@ export default class HelloWorld extends Web3Component {
 
   mounted(): void {
     const canvas = this.$refs['canvas'] as HTMLCanvasElement;
-    this.canvas = canvas.getContext('2d');
+    this.canvas = canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.canvas.imageSmoothingEnabled = false;
     this.buttonImage = buttonnotpressed;
     this.randomize();
   }
@@ -115,14 +116,14 @@ export default class HelloWorld extends Web3Component {
     const nose = await this.loadImage(Noses[this.nose].data);
     const mouth = await this.loadImage(Mouths[this.mouth].data);
     const hair = await this.loadImage(Hairs[this.hair].data);
-    this.canvas.clearRect(0, 0, 100, 100);
-    this.canvas.drawImage(body, 0, 0);
-    this.canvas.drawImage(clothing, 0, 0);
-    this.canvas.drawImage(leftEye, 0, 0);
-    this.canvas.drawImage(rightEye, 0, 0);
-    this.canvas.drawImage(nose, 0, 0);
-    this.canvas.drawImage(mouth, 0, 0);
-    this.canvas.drawImage(hair, 0, 0);
+    this.canvas.clearRect(0, 0, 600, 600);
+    this.canvas.drawImage(body, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(clothing, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(leftEye, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(rightEye, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(nose, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(mouth, 0, 0, 100, 100, 0, 0, 600, 600);
+    this.canvas.drawImage(hair, 0, 0, 100, 100, 0, 0, 600, 600);
   }
 
   get tokenId(): number {
