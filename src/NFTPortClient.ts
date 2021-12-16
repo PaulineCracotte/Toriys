@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Timer from '@/utils/Timer';
+import App from '@/App.vue';
 
 class NFTPortHTTPClient {
   private axios = axios.create({
@@ -9,21 +10,20 @@ class NFTPortHTTPClient {
       Authorization: String(process.env.VUE_APP_NFTPORT_API_KEY)
     }
   });
-  private chain = 'polygon';
   private contractAddress = '';
 
   async retrieveContractAddress(tx: string): Promise<string> {
     await Timer(400);
-    const { data } = await this.axios.get(`/contracts/${tx}?chain=${this.chain}`);
+    const { data } = await this.axios.get(`/contracts/${tx}?chain=${App.chain}`);
     if (typeof data.contract_address === 'string') return data;
     return await this.retrieveContractAddress(tx);
   }
 
   async deployContract(): Promise<any> {
     const { data } = await this.axios.post('/contracts', {
-      chain: this.chain,
-      name: 'Random Toriys',
-      symbol: 'TORI',
+      chain: App.chain,
+      name: App.contractName,
+      symbol: App.contractSymbol,
       owner_address: String(process.env.VUE_APP_NFT_CONTRACT_OWNER)
     });
     const tx = data.transaction_hash;
@@ -33,13 +33,17 @@ class NFTPortHTTPClient {
   async loadContract(): Promise<void> {
     if (this.contractAddress !== '') return;
     const { data } = await this.axios.get('/me/contracts');
-    const contract = data.contracts.find((c: any) => c.symbol === 'TORI' && c.chain === this.chain) ?? await this.deployContract();
+    const contract = data.contracts.find((c: any) =>
+      c.symbol === App.contractSymbol &&
+      c.chain === App.chain &&
+      c.name === App.contractName
+    ) ?? await this.deployContract();
     this.contractAddress = contract.address;
   }
 
   async getMetadata(tokenId: number): Promise<any> {
     await this.loadContract();
-    const {data} = await this.axios.get(`/nfts/${this.contractAddress}/${tokenId}?chain=${this.chain}`);
+    const {data} = await this.axios.get(`/nfts/${this.contractAddress}/${tokenId}?chain=${App.chain}`);
     console.log({data});
     if (data.response === 'NOK') {
       return null;
@@ -62,7 +66,7 @@ class NFTPortHTTPClient {
   async mint(token_id: number, metadata_uri: string, mint_to_address: string): Promise<string> {
     await this.loadContract();
     const { data } = await this.axios.post('/mints/customizable', {
-      chain: this.chain,
+      chain: App.chain,
       contract_address: this.contractAddress,
       metadata_uri,
       token_id,

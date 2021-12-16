@@ -14,6 +14,11 @@ import HelloWorld from './components/HelloWorld.vue';
   },
 })
 export default class App extends Vue {
+
+  public static contractName = 'Pixel Toriys';
+  public static contractSymbol = 'PXTORI';
+  public static chain = 'polygon';
+
   private configs: Array<string> = [
     'Khizo',
     'Fala',
