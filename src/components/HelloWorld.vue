@@ -144,7 +144,7 @@ export default class HelloWorld extends Web3Component {
       this.rightEye << 6 |
       this.nose << 4 |
       this.mouth << 2 |
-      this.hair;
+      this.hair || 0b0100000000000000;
   }
 
   onMouseUp(): void {
@@ -219,6 +219,10 @@ export default class HelloWorld extends Web3Component {
   }
 
   async check(): Promise<void> {
+    if (!this.logged) {
+      this.initWeb3Login();
+      await this.awaitWeb3Login();
+    }
     if (this.loading || this.checked) return;
     this.loading = true;
     const metadata = await NFTPortClient.getMetadata(this.tokenId);
@@ -234,13 +238,20 @@ export default class HelloWorld extends Web3Component {
   randomize(): void {
     this.checked = false;
     this.available = false;
-    this.leftEye = Math.floor(Math.random() * 4);
-    this.rightEye = Math.floor(Math.random() * 4);
-    this.mouth = Math.floor(Math.random() * 4);
-    this.nose = Math.floor(Math.random() * 4);
-    this.hair = Math.floor(Math.random() * 4);
-    this.body = Math.floor(Math.random() * 4);
-    this.clothing = Math.floor(Math.random() * 4);
+    // this.leftEye = Math.floor(Math.random() * 4);
+    // this.rightEye = Math.floor(Math.random() * 4);
+    // this.mouth = Math.floor(Math.random() * 4);
+    // this.nose = Math.floor(Math.random() * 4);
+    // this.hair = Math.floor(Math.random() * 4);
+    // this.body = Math.floor(Math.random() * 4);
+    // this.clothing = Math.floor(Math.random() * 4);
+    this.leftEye = 0;
+    this.rightEye = 0;
+    this.mouth = 0;
+    this.nose = 0;
+    this.hair = 0;
+    this.body = 0;
+    this.clothing = 0;
     this.draw();
   }
 }

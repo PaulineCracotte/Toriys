@@ -36,8 +36,10 @@ class NFTPortHTTPClient {
     const contract = data.contracts.find((c: any) =>
       c.symbol === App.contractSymbol &&
       c.chain === App.chain &&
-      c.name === App.contractName
+      c.name === App.contractName &&
+      c.owner_address === process.env.VUE_APP_NFT_CONTRACT_OWNER
     ) ?? await this.deployContract();
+    console.log({contract});
     this.contractAddress = contract.address;
   }
 
@@ -65,6 +67,7 @@ class NFTPortHTTPClient {
 
   async mint(token_id: number, metadata_uri: string, mint_to_address: string): Promise<string> {
     await this.loadContract();
+    console.log({address: this.contractAddress});
     const { data } = await this.axios.post('/mints/customizable', {
       chain: App.chain,
       contract_address: this.contractAddress,
@@ -72,6 +75,7 @@ class NFTPortHTTPClient {
       token_id,
       mint_to_address
     });
+    console.log({data});
     return data.transaction_hash;
   }
 }
