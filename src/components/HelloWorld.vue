@@ -238,20 +238,17 @@ export default class HelloWorld extends Web3Component {
   randomize(): void {
     this.checked = false;
     this.available = false;
-    // this.leftEye = Math.floor(Math.random() * 4);
-    // this.rightEye = Math.floor(Math.random() * 4);
-    // this.mouth = Math.floor(Math.random() * 4);
-    // this.nose = Math.floor(Math.random() * 4);
-    // this.hair = Math.floor(Math.random() * 4);
-    // this.body = Math.floor(Math.random() * 4);
-    // this.clothing = Math.floor(Math.random() * 4);
-    this.leftEye = 0;
-    this.rightEye = 0;
-    this.mouth = 0;
-    this.nose = 0;
-    this.hair = 0;
-    this.body = 0;
-    this.clothing = 0;
+
+    this.errorMessage = '';
+    this.tx = '';
+    this.leftEye = Math.floor(Math.random() * 4);
+    this.rightEye = Math.floor(Math.random() * 4);
+    this.mouth = Math.floor(Math.random() * 4);
+    this.nose = Math.floor(Math.random() * 4);
+    this.hair = Math.floor(Math.random() * 4);
+    this.body = Math.floor(Math.random() * 4);
+    this.clothing = Math.floor(Math.random() * 4);
+
     this.draw();
   }
 }
